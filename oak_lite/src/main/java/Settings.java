@@ -13,18 +13,25 @@ public class Settings {
     private final ArrayList<MidiNote> midiNotes;
     private final File background;
     private final String outputFilePath;
+    private final int outputWidth;
+    private final int outputHeight;
     private final Color noteColor;
-    private final int ROWS = 3;
-    private final int COLS = 3;
+    private final int rows;
+    private final int cols;
 
     public Settings(MidiFile midiFile, Sequence sequence, ArrayList<MidiNote> midiNotes,
-                    File background, String outputFilePath, Color noteColor) {
+                    File background, String outputFilePath, int outputWidth, int outputHeight,
+                    Color noteColor, int dim) {
         this.midiFile = midiFile;
         this.sequence = sequence;
         this.midiNotes = midiNotes;
         this.background = background;
         this.outputFilePath = outputFilePath;
+        this.outputWidth = outputWidth;
+        this.outputHeight = outputHeight;
         this.noteColor = noteColor;
+        this.rows = dim;
+        this.cols = dim;
     }
 
     public MidiFile getMidiFile() {
@@ -47,12 +54,20 @@ public class Settings {
         return outputFilePath;
     }
 
-    public int getROWS() {
-        return this.ROWS;
+    public int getOutputWidth() {
+        return outputWidth;
     }
 
-    public int getCOLS() {
-        return this.COLS;
+    public int getOutputHeight() {
+        return outputHeight;
+    }
+
+    public int getRows() {
+        return this.rows;
+    }
+
+    public int getCols() {
+        return this.cols;
     }
 
     public Color getNoteColor() {

@@ -3,6 +3,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
+import me.tongfei.progressbar.ProgressBar;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PdfOutput {
-
+    private ProgressBar progressBar;
     private String outputDest;
     private ArrayList<BufferedImage> images;
 
@@ -22,6 +23,8 @@ public class PdfOutput {
     }
 
     public void writePdf() {
+        progressBar = new ProgressBar("Writing PDF", images.size());
+        progressBar.start();
         try {
             Document document = new Document();
             Rectangle pageDim = new Rectangle(images.get(0).getWidth(), images.get(0).getHeight());
@@ -33,7 +36,9 @@ public class PdfOutput {
                 ImageIO.write(image, "png", baos);
                 Image singlePageImage = Image.getInstance(baos.toByteArray());
                 document.add(singlePageImage);
+                progressBar.step();
             }
+            progressBar.stop();
             document.close();
         }
         catch (IOException | DocumentException e) {

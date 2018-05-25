@@ -19,7 +19,10 @@ public class SettingsLoader {
     private ArrayList<MidiNote> midiNotes;
     private File background;
     private String outputFilePath;
+    private int width = 0;
+    private int height = 0;
     private Color noteColor;
+    private int dim;
 
     private CommandLine cmd;
 
@@ -69,6 +72,24 @@ public class SettingsLoader {
             }
         }
 
+        if (cmd.hasOption("w")) {
+            try {
+                width = Integer.parseInt(cmd.getOptionValue("w"));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid width " + cmd.getOptionValue("w") + ". Using default values.");
+            }
+        }
+
+        if (cmd.hasOption("h")) {
+            try {
+                height = Integer.parseInt(cmd.getOptionValue("h"));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid height " + cmd.getOptionValue("h") + ". Using default values.");
+            }
+        }
+
         if(cmd.hasOption("b")) {
             if(Validator.isValidImageFile(cmd.getOptionValue("b"))) {
                 background = new File(cmd.getOptionValue("b"));
@@ -88,11 +109,23 @@ public class SettingsLoader {
             }
         }
 
+        if(cmd.hasOption("g")) {
+            try {
+                dim = Integer.parseInt(cmd.getOptionValue("g"));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid grid dimension: " + cmd.getOptionValue("g") + ". Using default values.");
+            }
+        }
+
         return new Settings(midiFile,
                             sequence,
                             midiNotes,
                             background,
                             outputFilePath,
-                            noteColor);
+                            width,
+                            height,
+                            noteColor,
+                            dim);
     }
 }

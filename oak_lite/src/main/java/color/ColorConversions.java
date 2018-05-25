@@ -29,9 +29,8 @@ public class ColorConversions {
             return (Color)Color.class.getField(name.toUpperCase()).get(null);
         }
         catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-//            throw new color.ColorConversionException("Unable to find color: '" + name + "'");
+            throw new color.ColorConversionException("Unable to find color: '" + name + "'");
         }
-        return null;
     }
 
     /**
@@ -80,7 +79,12 @@ public class ColorConversions {
      * @throws ColorConversionException
      */
     public static Color interrogateColor(String inputColour) throws ColorConversionException {
-        Color color = getColorByName(inputColour);
+        Color color = null;
+        try {
+            color = getColorByName(inputColour);
+        }
+        catch (ColorConversionException e) {}
+
         if(color != null) {
             return color;
         }

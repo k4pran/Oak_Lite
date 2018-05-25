@@ -1,8 +1,7 @@
 import imagemod.ImageTransform;
-import me.tongfei.progressbar.ProgressBar;
-
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import me.tongfei.progressbar.ProgressBar;
 
 /**
  * Responsible for constructing a frame template for each frame to be used in the video.
@@ -18,8 +17,7 @@ public class ImageFactory {
     // Properties
     //================================================================================
 
-    private static int defPixelWidth = 800;
-    private static int defPixelHeight = 600;
+    private ProgressBar progressBar;
 
     private Settings settings;
     private int rows;
@@ -34,8 +32,8 @@ public class ImageFactory {
 
     public ImageFactory(Settings settings) {
         this.settings = settings;
-        this.rows = settings.getROWS();
-        this.cols = settings.getCOLS();
+        this.rows = settings.getRows();
+        this.cols = settings.getCols();
     }
 
     //================================================================================
@@ -43,11 +41,13 @@ public class ImageFactory {
     //================================================================================
 
     public void createImages(ArrayList<BufferedImage> sprites) {
-        System.out.println("Creating pdf...");
+        progressBar = new ProgressBar("Creating frames", sprites.size());
+        progressBar.start();
         calculateSpriteCounts(sprites);
         ArrayList<BufferedImage> pdfImages = coordinatePdfCreation(sprites);
-        System.out.println("Writing pdf...");
-        PdfOutput pdfOutput = new PdfOutput("test", pdfImages);
+        progressBar.stop();
+
+        PdfOutput pdfOutput = new PdfOutput(settings.getOutputFilePath(), pdfImages);
         pdfOutput.writePdf();
     }
 
@@ -93,8 +93,20 @@ public class ImageFactory {
         img = addForeGround(sprites, isTitle);
         img = addBackground(img);
         img = addTextToImage(img, isTitle);
-        img = ImageTransform.scale(img, defPixelWidth, defPixelHeight);
+        int width = settings.getOutputWidth();
+        int height = settings.getOutputHeight();
+        if (width > 0.0 || height > 0.0) {
+            width = width > 0.0 ? settings.getOutputWidth() : img.getWidth();
+            height = height > 0.0 ? settings.getOutputHeight() : img.getHeight();
+            img = ImageTransform.scale(img, width, height);
+        }
 
+        if (isLast) {
+            progressBar.stepBy(lastFrameCount);
+        }
+        else {
+            progressBar.stepBy(sprites.size());
+        }
         return img;
     }
 

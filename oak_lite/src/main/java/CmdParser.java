@@ -49,11 +49,27 @@ public class CmdParser {
                 .build()
         );
 
+        options.addOption(Option.builder("w")
+                .longOpt("width")
+                .desc("Scales the output image to width 'w'")
+                .hasArg()
+                .argName("<pixels>")
+                .build()
+        );
+
+        options.addOption(Option.builder("h")
+                .longOpt("height")
+                .desc("Scales the output image to height 'h'")
+                .hasArg()
+                .argName("<pixels>")
+                .build()
+        );
+
         options.addOption(Option.builder("b")
                 .longOpt("background")
                 .desc("Background image file path. If not set defaults to a white background.")
                 .hasArg()
-                .argName("<file>")
+                .argName("<pixels>")
                 .build()
         );
 
@@ -83,6 +99,14 @@ public class CmdParser {
                 .desc("Music title text color.")
                 .hasArg()
                 .argName("<color>")
+                .build()
+        );
+
+        options.addOption(Option.builder("g")
+                .longOpt("grid")
+                .desc("Grid dimensions. e.g. 3 creates a 3*3 grid. Defaults to 5*5")
+                .hasArg()
+                .argName("<dim>")
                 .build()
         );
 

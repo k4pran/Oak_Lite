@@ -24,7 +24,7 @@ package imagemod;/*
 *                         - Transparent - Renders pixels transparent.
 *                         - Level(s) - Targets user-defined boundaryArea level(s).</p>
 *
-* @author cr0n
+* @author ryanmccauley211
 * @version 1.0
 * @since 2017-10-01
 */
